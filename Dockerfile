@@ -1,16 +1,19 @@
-FROM bitnami/express:latest
+FROM node:18-alpine
 
 # Create app directory in container
 WORKDIR /app
 
+# Copy package.json (if it exists)
+COPY package*.json ./
+
+# Install app dependencies
+RUN npm install
+
 # Copy all files from current directory to container
 COPY . .
-
-## Install app dependencies
-RUN npm install
 
 # Expose port 3000
 EXPOSE 3000
 
-# Run app in watch mode
-CMD [ "node", "--watch", "/app/server.js" ]
+# Run the application
+CMD [ "node", "server.js" ]
